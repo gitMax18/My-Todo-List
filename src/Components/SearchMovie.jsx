@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import MovieResult from "./MovieResult";
 
 function SearchMovie({ addMovie, removeMovie }) {
-  const [isShowSearchMovie, setIsShowSearchMovie] = useState(true);
+  const [isShowSearchMovie, setIsShowSearchMovie] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [movieSearch, setMovieSearch] = useState("");
   const [resultSearch, setResultSearch] = useState([]);
@@ -11,12 +11,6 @@ function SearchMovie({ addMovie, removeMovie }) {
   const refSearchMovieSection = useRef();
 
   const handleClick = () => {
-    if (isShowSearchMovie) {
-      const height = refSearchMovieSection.current.scrollHeight + 15;
-      refSearchMovieSection.current.style.height = `${height}px`;
-    } else {
-      refSearchMovieSection.current.style.height = `0px`;
-    }
     setIsShowSearchMovie((boolean) => !boolean);
   };
 
@@ -26,21 +20,28 @@ function SearchMovie({ addMovie, removeMovie }) {
       .then((response) => response.json())
       .then((data) => {
         setResultSearch([...data.Search]);
-        console.log(resultSearch);
       })
       .catch((err) => console.log(err));
   };
 
-  let displayResult;
+  useEffect(() => {
+    if (isShowSearchMovie) {
+      const height = refSearchMovieSection.current.scrollHeight;
+      refSearchMovieSection.current.style.height = `${height}px`;
+    } else {
+      refSearchMovieSection.current.style.height = `0px`;
+    }
+  }, [resultSearch, isShowSearchMovie]);
 
+  let displayResult = null;
   if (resultSearch) {
-    displayResult = resultSearch.map((result) => (
-      <MovieResult data={result} key={result.imdbID} addMovie={addMovie} removeMovie={removeMovie} />
-    ));
+    displayResult = resultSearch.map((result) => {
+      return <MovieResult data={result} key={result.imdbID} addMovie={addMovie} removeMovie={removeMovie} />;
+    });
   }
 
   let classNameIcon = "searchMovie_header_icon";
-  classNameIcon += !isShowSearchMovie ? " searchMovie_header_icon-close" : "";
+  classNameIcon += isShowSearchMovie ? " searchMovie_header_icon-close" : "";
 
   return (
     <div className="searchMovie_container">
@@ -52,21 +53,18 @@ function SearchMovie({ addMovie, removeMovie }) {
       </div>
       <div className="searchMovie_section" ref={refSearchMovieSection}>
         <form className="searchMovie_form" onSubmit={handleSubmit}>
-          <div className="searchMovie_inputs">
-            <hr className="searchMovie_form_hr" />
-            <label htmlFor="newMovie">Film : </label>
-            <span className="searchMovie_errorMessage">
-              {showErrorMessage && "Veuillez entrer votre film"}
-            </span>
-            <input
-              type="text"
-              id="newovie"
-              value={movieSearch}
-              name="todo"
-              onChange={(e) => setMovieSearch(e.target.value)}
-            />
-          </div>
-          <button className="createTodo_btn" type="submit">
+          <hr className="searchMovie_form_hr" />
+          <span className="searchMovie_errorMessage">{showErrorMessage && "Veuillez entrer votre film"}</span>
+          <input
+            className="searchMovie_input"
+            type="text"
+            id="newovie"
+            value={movieSearch}
+            name="todo"
+            onChange={(e) => setMovieSearch(e.target.value)}
+          />
+
+          <button className="searchMovie_btn" type="submit">
             Rechercher
           </button>
         </form>
