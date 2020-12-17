@@ -10,7 +10,7 @@ function Landing(props) {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        props.history.push(`/welcome/${user.uid}`);
+        props.history.push(`/welcome/${user.uid}/todos`);
       } else {
         //si pas d'user
       }

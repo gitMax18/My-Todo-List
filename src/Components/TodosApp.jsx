@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import CreateTodo from "./CreateTodo";
 import Todos from "./Todos";
 // import { IoClose } from "react-icons/io5";
