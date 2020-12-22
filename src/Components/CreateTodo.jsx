@@ -61,8 +61,7 @@ function CreateTodo({ createNewTodo }) {
       <form className="createTodo_form" onSubmit={handleSubmit} ref={refCreateTodoForm}>
         <div className="createTodo_inputs">
           <hr className="createTodo_form_hr" />
-          <label htmlFor="newTodo">Todo : </label>
-          <span className="createTodo_errorMessage">{showErrorMessage && "Veuillez entrer votre todo"}</span>
+          <p className="createTodo_errorMessage">{showErrorMessage && "Veuillez entrer votre todo"}</p>
           <input type="text" id="newTodo" value={todo} name="todo" onChange={handleChange} />
         </div>
         <div className="createTodo_inputs">

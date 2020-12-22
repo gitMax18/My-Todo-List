@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { CgLogOut } from "react-icons/cg";
 import firebase, { logOutUser } from "../firebase";
+import { NavLink } from "react-router-dom";
 
-function Header({ history }) {
+function Header({ history, userId }) {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -24,8 +25,16 @@ function Header({ history }) {
     <header>
       <div className="header_wrapper">
         <h1 className="header_title">My Todo List</h1>
+        <ul className="header_nav">
+          <NavLink to={`todos`} className={"header_link"}>
+            My Todos
+          </NavLink>
+          <NavLink to={`movies`} className={"header_link"}>
+            My Movies
+          </NavLink>
+        </ul>
         <button className="header_btn" onClick={handleClick}>
-          <CgLogOut className="header_btn_icon" /> &nbsp;<span>Déconnexion</span>
+          <CgLogOut className="header_btn_icon" />
         </button>
       </div>
     </header>
