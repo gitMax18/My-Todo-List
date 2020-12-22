@@ -1,28 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchMovie from "./SearchMovie";
-import Movies from "./Movies";
+import FavoriteMovie from "./FavoriteMovie";
 
-function MoviesApp() {
-  const [movies, setMovies] = useState([]);
+import { addDataMovies, getDataMovies } from "../firebase";
+
+function MoviesApp({ userId }) {
+  const [moviesId, setMoviesId] = useState([]);
+
+  useEffect(() => {
+    if (moviesId.length > 0) {
+      addDataMovies(userId, moviesId);
+    }
+  }, [moviesId, userId]);
+
+  useEffect(() => {
+    getDataMovies(userId)
+      .then((data) => setMoviesId(data))
+      .catch((err) => console.log(err));
+  }, [userId]);
 
   const addMovie = (movieId) => {
-    setMovies([...movies, movieId]);
+    setMoviesId([...moviesId, movieId]);
   };
 
   const removeMovie = (movieId) => {
-    let newMovies = [...movies];
-    newMovies = movies.filter((movie) => {
+    console.log(movieId);
+    let newMovies = [...moviesId];
+    newMovies = moviesId.filter((movie) => {
       return movie !== movieId;
     });
-    setMovies(newMovies);
+    setMoviesId(newMovies);
   };
 
+  const displayMovies = moviesId.map((movieId) => (
+    <FavoriteMovie movieId={movieId} key={movieId} removeMovie={removeMovie} />
+  ));
+
   return (
-    <div className="todosApp_page">
-      <div className="todosApp_container">
-        <SearchMovie addMovie={addMovie} removeMovie={removeMovie} />
-        <h1 className="todosApp_title">Mes Films</h1>
-        <Movies />
+    <div className="moviesApp_page">
+      <div className="moviesApp_container">
+        <SearchMovie addMovie={addMovie} removeMovie={removeMovie} moviesId={moviesId} />
+        <h1 className="moviesApp_title">Mes Films</h1>
+
+        {displayMovies.length > 0 ? (
+          <div className="favoriteMovies_container">{displayMovies}</div>
+        ) : (
+          <p className="favoriteMovies_none">Vous n'avez actuellement aucun film ajouté</p>
+        )}
       </div>
     </div>
   );

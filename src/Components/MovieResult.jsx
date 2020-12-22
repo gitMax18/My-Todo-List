@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-function MovieResult({ data, addMovie, removeMovie }) {
-  const [isFavorite, setIsFavorite] = useState(false);
+function MovieResult({ data, addMovie, removeMovie, isAdd }) {
+  const [isFavorite, setIsFavorite] = useState(isAdd);
 
   const { Title, Year, imdbID, Type, Poster } = data;
 

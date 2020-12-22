@@ -54,14 +54,14 @@ var firebaseConfig = {
       })
     }
 
-    // Fonction de gestion de la base de donnée firetore
+    // Fonction de gestion de la base de donnée firetore pour Todo
 
     const db = firebase.firestore()
 
-    export const addData = (userId, object)=>{
+    export const addDataTodo = (userId, object)=>{
       db.collection("users").doc(userId).collection("Todos").doc(Object.keys(object)[0]).set(object)
-    .then(function(docRef) {
-        // console.log("Document written with ID: ", docRef.id);
+    .then(function() {
+        console.log("Todos succesfuly written !");
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
@@ -77,18 +77,43 @@ var firebaseConfig = {
     });
     }
 
-    export const getData = (userId) => {
+    export const getDataTodos = (userId) => {
       return new Promise((resolve, reject)=>{
         db.collection("users").doc(userId).collection("Todos").get()
         .then(function(querySnapshot) {
           let Todos = {}
           querySnapshot.forEach(function(doc) {
             Todos = {...Todos, ...doc.data()}
-          });
+          })
          return resolve(Todos)
-      });
+      })
+      .catch(()=> reject("Probleme rencontrer avec la récupération des données"))
       })
     }
+
+    // Fonction de gestion de la base de donnée firetore pour Movie
+
+
+    export const addDataMovies = (userId, moviesId) =>{
+      db.collection("users").doc(userId).collection("Movies").doc("moviesId").set({movies : moviesId})
+    .then(function() {
+        console.log("MoviesId succesfuly written ");
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+    }
+
+    export const getDataMovies = (userId) => {
+      return new Promise((resolve, reject)=>{
+        db.collection("users").doc(userId).collection("Movies").doc("moviesId").get()
+        .then(function(doc) {
+          return resolve(doc.data().movies)
+      })
+      .catch(()=> reject("Probleme rencontrer avec la récupération des données"))
+      })
+    }
+
 
     export default firebase;
 
