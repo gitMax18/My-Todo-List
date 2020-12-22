@@ -1,0 +1,8 @@
+- Faire des personnal hook pour la gestion des ref/heght et 
+la gestion des className pour les show close
+
+- Faire le responsive
+
+- Voir pour mettre des Loader
+
+- Faire un fond pour les pages Todo et Movie
