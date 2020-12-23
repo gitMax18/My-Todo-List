@@ -22,6 +22,10 @@
   font-family: Roboto, sans-serif;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 .App {
   position: relative;
 }
@@ -278,7 +282,8 @@ header {
   width: 100%;
   height: 100px;
   background-color: var(--primary-color-1);
-  border-bottom: 1px solid black;
+  border-bottom: 3px solid black;
+  position: relative;
 }
 
 .header_wrapper {
@@ -303,12 +308,48 @@ header {
   align-items: center;
   font-size: 40px;
   font-family: var(--brand-title);
-  width: 40%;
+  width: 60%;
+  height: 100%;
+}
+
+.header_nav li {
+  list-style-type: none;
 }
 
 .header_link {
   text-decoration: none;
   color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px;
+  position: relative;
+}
+
+.header_link::before {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 3px;
+  background-color: black;
+  transform: scale(0);
+  transition: 0.2s ease-in-out;
+}
+
+.header_link:hover::before {
+  transform: scale(1);
+  transition: 0.4s ease-in-out;
+}
+
+.header_link-active::before {
+  transform: scale(1);
+}
+
+.header_nav_icon {
+  padding-right: 15px;
+  font-size: 60px;
 }
 
 .header_btn {
@@ -329,8 +370,117 @@ header {
 }
 
 .header_btn:hover .header_btn_icon {
-  transform: translateX(-10px);
+  transform: scale(1.2);
   transition: all 0.3s ease-in-out;
+}
+
+/* header partie responsive ---------- */
+
+.header_nav_btnCircle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--primary-color-2);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 20;
+  margin-right: 20px;
+}
+
+.line {
+  width: 60%;
+  height: 3px;
+  background-color: var(--primary-color-4);
+  position: relative;
+  transition: transform 0.2s, top 0.2s 0.2s;
+}
+
+.line:nth-child(1) {
+  top: -8px;
+}
+
+.line:nth-child(3) {
+  top: 8px;
+}
+
+.header_nav_btnCircle-active .line:nth-child(1) {
+  top: 3px;
+  transform: rotate(45deg);
+  transition: transform 0.2s 0.2s, top 0.2s;
+}
+
+.header_nav_btnCircle-active .line:nth-child(3) {
+  top: -3px;
+  transform: rotate(-45deg);
+  transition: transform 0.2s 0.2s, top 0.2s;
+}
+
+.header_nav_btnCircle-active .line:nth-child(2) {
+  transform: scale(0);
+}
+
+@media screen and (max-width: 950px) {
+  .header_nav_btnCircle {
+    display: flex;
+  }
+
+  .header_link span {
+    display: none;
+  }
+  .header_nav {
+    position: absolute;
+    top: 45%;
+    left: 95%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 400px;
+    height: 400px;
+    background-color: var(--primary-color-3);
+    z-index: 10;
+    border-radius: 50%;
+    border: 10px solid black;
+  }
+
+  .header_nav-active {
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 10;
+    transition: 0.5s ease-out 0.2s;
+  }
+
+  .header_nav li {
+    position: absolute;
+  }
+
+  .header_nav li:nth-child(1) {
+    top: 42%;
+    left: 5%;
+  }
+  .header_nav li:nth-child(2) {
+    left: 12%;
+    top: 66%;
+  }
+  .header_nav li:nth-child(3) {
+    left: 40%;
+    top: 80%;
+  }
+
+  .header_link {
+    transition: 0.2s ease-in-out;
+  }
+
+  .header_link-active {
+    color: var(--primary-color-4);
+  }
+
+  .header_link:hover {
+    transform: scale(1.2);
+    transition: 0.3s ease-in-out;
+  }
+
+  .header_link::before {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 850px) {
@@ -348,6 +498,11 @@ header {
   }
   .header_btn {
     padding-right: 10px;
+  }
+
+  .header_nav_btnCircle {
+    width: 50px;
+    height: 50px;
   }
 }
 
@@ -454,6 +609,7 @@ header {
   align-items: center;
   color: black;
   cursor: pointer;
+  padding: 5px 0;
 }
 
 .createTodo_header_icon,
@@ -945,6 +1101,27 @@ header {
 /* Footer ------------------------------------------------- */
 
 footer {
-  height: 100px;
   background-color: var(--primary-color-1);
+  font-size: 18px;
+  border-top: 3px solid black;
+}
+
+.footer_infos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 15px 10px 5px;
+  text-align: center;
+}
+
+.footer_icon {
+  font-size: 40px;
+  border-radius: 50%;
+  transition: all 0.4s ease-in-out;
+}
+
+.footer_icon:hover {
+  box-shadow: 0 0 5px 2px;
+  transition: all 0.4s ease-in-out;
 }

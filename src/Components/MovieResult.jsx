@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function MovieResult({ data, addMovie, removeMovie, isAdd }) {
   const [isFavorite, setIsFavorite] = useState(isAdd);
@@ -13,6 +13,10 @@ function MovieResult({ data, addMovie, removeMovie, isAdd }) {
     }
     setIsFavorite((fav) => !fav);
   };
+
+  useEffect(() => {
+    setIsFavorite(isAdd);
+  }, [isAdd]);
 
   return (
     <div className="movieResult_container">

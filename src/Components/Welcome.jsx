@@ -9,7 +9,7 @@ function Welcome(props) {
   return (
     <div className="welcome_page">
       <Router>
-        <Header history={props.history} userId={props.match.params.userId} />
+        <Header history={props.history} />
         <Switch>
           <Route path={"/welcome/:userId/todos"}>
             <TodosApp userId={props.match.params.userId} />
