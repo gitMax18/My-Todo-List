@@ -46,7 +46,7 @@ const ModalChangePwd = React.forwardRef(({ hideModalChangePwd, emailConnexion },
         </p>
         <form onSubmit={handleSubmit}>
           <div className="modal_input">
-            <label htmlFor="emailChangepwd">Adresse mail</label>
+            <label htmlFor="emailChangepwd">Adresse email :</label>
             <input
               type="emailChangePwd"
               id="emailChangePwd"

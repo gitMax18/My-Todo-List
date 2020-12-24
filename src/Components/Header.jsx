@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CgLogOut } from "react-icons/cg";
 import { FaListUl } from "react-icons/fa";
 import { RiMovieLine } from "react-icons/ri";
@@ -7,8 +7,6 @@ import { NavLink } from "react-router-dom";
 
 function Header({ history }) {
   const [isShowNav, setIsShowNav] = useState(false);
-
-  // const refNav = useRef();
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
