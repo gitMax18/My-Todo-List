@@ -1,21 +1,19 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { useHandleHeight } from "../personnalHooks";
 import Todo from "./Todo";
 import { IoClose } from "react-icons/io5";
 
 function Todos({ tabTodos, todosObject, deleteTodo, children }) {
-  const [isShowSections, setIsShowSections] = useState(true);
-
-  //Ref qui sert a gérer la hauteur de la section au défillement
   const refTodos = useRef();
 
+  const [isShow, manageValue] = useHandleHeight(false, refTodos);
+
   useEffect(() => {
-    if (isShowSections) {
+    if (tabTodos.length > 0 && !isShow) {
       const height = refTodos.current.scrollHeight;
       refTodos.current.style.height = `${height}px`;
-    } else {
-      refTodos.current.style.height = `0px`;
     }
-  }, [tabTodos, isShowSections]);
+  }, [tabTodos]);
 
   const showTodos = tabTodos.map((item) => {
     if (todosObject[Object.keys(item)] === undefined) {
@@ -31,16 +29,12 @@ function Todos({ tabTodos, todosObject, deleteTodo, children }) {
     );
   });
 
-  const handleClick = (e) => {
-    if (isShowSections) {
-      setIsShowSections(false);
-    } else {
-      setIsShowSections(true);
-    }
+  const handleClick = () => {
+    manageValue();
   };
 
   let className = "todos_section_header_icon";
-  className += !isShowSections ? " todos_section_header_icon-show" : "";
+  className += isShow ? " todos_section_header_icon-show" : "";
 
   return (
     <div className="todos_section">

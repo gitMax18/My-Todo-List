@@ -1,13 +1,16 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from "react";
+import { useHandleHeight } from "../personnalHooks";
 import { IoClose } from "react-icons/io5";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 
 function FavoriteMovie({ movieId, removeMovie }) {
-  const [isShowFavoriteMovie, setIsShowFavoriteMovie] = useState(false);
   const [movieData, setMovieData] = useState({});
 
   const { Title, Year, Runtime, Genre, Plot, Poster, Ratings = [], Type, Actors, Writer, imdbID } = movieData;
   const refContent = useRef();
+
+  const [isShow, manageValue] = useHandleHeight(true, refContent);
+
   useLayoutEffect(() => {
     fetch(`http://www.omdbapi.com/?i=${movieId}&plot=full&apikey=a80c0cee&`)
       .then((response) => response.json())
@@ -17,21 +20,21 @@ function FavoriteMovie({ movieId, removeMovie }) {
       .catch((err) => console.log(err));
   }, [movieId]);
 
-  useEffect(() => {
-    if (isShowFavoriteMovie) {
-      const height = refContent.current.scrollHeight;
-      refContent.current.style.height = `${height}px`;
-    } else {
-      refContent.current.style.height = `0px`;
-    }
-  }, [isShowFavoriteMovie]);
+  // useEffect(() => {
+  //   if (isShowFavoriteMovie) {
+  //     const height = refContent.current.scrollHeight;
+  //     refContent.current.style.height = `${height}px`;
+  //   } else {
+  //     refContent.current.style.height = `0px`;
+  //   }
+  // }, [isShowFavoriteMovie]);
 
   const handleClick = () => {
-    setIsShowFavoriteMovie((boolean) => !boolean);
+    manageValue();
   };
 
   let classNameIcon = "movie_header_icon";
-  classNameIcon += isShowFavoriteMovie ? " movie_header_icon-show" : "";
+  classNameIcon += !isShow ? " movie_header_icon-show" : "";
 
   return (
     <div className="movie_container">

@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
+import { useHandleHeight } from "../personnalHooks";
 
 const initialValue = {
   todo: "",
@@ -10,11 +11,13 @@ const initialValue = {
 function CreateTodo({ createNewTodo }) {
   const [newTodo, setNewTodo] = useState(initialValue);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [isShowCreateTodo, setIsShowCreateTodo] = useState(true);
+  // const [isShowCreateTodo, setIsShowCreateTodo] = useState(true);
 
   const refCreateTodoForm = useRef();
 
   const { todo, date, isImportant } = newTodo;
+
+  const [isShow, manageValue] = useHandleHeight(true, refCreateTodoForm, 15);
 
   const handleChange = (e) => {
     if (e.target.type !== "checkbox") {
@@ -37,17 +40,18 @@ function CreateTodo({ createNewTodo }) {
   };
 
   const handleClick = () => {
-    if (isShowCreateTodo) {
-      const height = refCreateTodoForm.current.scrollHeight + 15;
-      refCreateTodoForm.current.style.height = `${height}px`;
-    } else {
-      refCreateTodoForm.current.style.height = `0px`;
-    }
-    setIsShowCreateTodo((boolean) => !boolean);
+    // if (isShowCreateTodo) {
+    //   const height = refCreateTodoForm.current.scrollHeight + 15;
+    //   refCreateTodoForm.current.style.height = `${height}px`;
+    // } else {
+    //   refCreateTodoForm.current.style.height = `0px`;
+    // }
+    // setIsShowCreateTodo((boolean) => !boolean);
+    manageValue();
   };
 
   let classNameIcon = "createTodo_header_icon";
-  classNameIcon += !isShowCreateTodo ? " createTodo_header_icon-close" : "";
+  classNameIcon += !isShow ? " createTodo_header_icon-close" : "";
 
   return (
     <div className="createTodo_container">

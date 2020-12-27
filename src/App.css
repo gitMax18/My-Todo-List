@@ -579,6 +579,32 @@ header {
   transition: all 0.5s ease-in-out;
 }
 
+.todoTransition-enter {
+  transform: scale(0);
+}
+
+.todoTransition-enter-active {
+  transform: scale(1);
+  transition: transform 1s ease-in;
+}
+
+.todoTransition-enter-done {
+  transform: scale(1);
+}
+
+.todoTransition-exit {
+  opacity: 1;
+}
+
+.todoTransition-exit-active {
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+.todoTransition-exit-done {
+  opacity: 0;
+}
+
 /*#######################################-- CreateTodo --#######################################*/
 
 .createTodo_container,
