@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { IoClose } from "react-icons/io5";
 import { useHandleHeight } from "../personnalHooks";
 

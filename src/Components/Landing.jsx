@@ -12,7 +12,7 @@ function Landing(props) {
       if (user) {
         props.history.push(`/welcome/${user.uid}/todos`);
       } else {
-        //si pas d'user
+        //if no user
       }
     });
     return () => {

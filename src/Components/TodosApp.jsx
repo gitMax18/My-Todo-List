@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import CreateTodo from "./CreateTodo";
 import Todos from "./Todos";
+import ReactLoading from "react-loading";
 
 import { addDataTodo, deleteData, getDataTodos } from "../firebase";
 
@@ -8,6 +9,7 @@ function TodosApp({ userId }) {
   const [todos, setTodos] = useState({});
   const [todosWithDate, setTodoWithDate] = useState([]);
   const [todosNoDate, setTodoNoDate] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   //Fonction qui permet de trier les todos avec date dans l'ordre chronologique
   const sortTodoWithDate = useCallback(
@@ -52,7 +54,10 @@ function TodosApp({ userId }) {
   }, [todos, sortTodoWithDate]);
 
   useEffect(() => {
-    getDataTodos(userId).then((data) => setTodos(data));
+    getDataTodos(userId).then((data) => {
+      setTodos(data);
+      setIsLoading(false);
+    });
   }, [userId]);
 
   const createNewTodo = (todo) => {
@@ -74,15 +79,22 @@ function TodosApp({ userId }) {
       <div className="todosApp_container">
         <CreateTodo createNewTodo={createNewTodo} />
         <h1 className="todosApp_title">Mes Todos</h1>
-        <Todos tabTodos={todosNoDate} todosObject={todos} deleteTodo={deleteTodo}>
-          Sans dates
-        </Todos>
-        <Todos tabTodos={todosWithDate} todosObject={todos} deleteTodo={deleteTodo}>
-          Avec dates
-        </Todos>
+        {isLoading ? (
+          <div className="loader">
+            <ReactLoading type={"spinningBubbles"} height={"20rem"} width={"20rem"} color={"#1e3d59"} />
+          </div>
+        ) : (
+          <React.Fragment>
+            <Todos tabTodos={todosNoDate} todosObject={todos} deleteTodo={deleteTodo}>
+              Sans dates
+            </Todos>
+            <Todos tabTodos={todosWithDate} todosObject={todos} deleteTodo={deleteTodo}>
+              Avec dates
+            </Todos>
+          </React.Fragment>
+        )}
       </div>
     </div>
   );
 }
-
 export default TodosApp;

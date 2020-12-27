@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import MovieResult from "./MovieResult";
 import { useHandleHeight } from "../personnalHooks";
@@ -17,7 +17,7 @@ function SearchMovie({ addMovie, removeMovie, moviesId }) {
   const refSearchMovieSection = useRef();
   const refPage = useRef();
 
-  const [isShow, manageValue] = useHandleHeight(true, refSearchMovieSection);
+  const [isShow, manageValue] = useHandleHeight(false, refSearchMovieSection);
 
   const handleShowSearchClick = () => {
     manageValue();
@@ -49,6 +49,15 @@ function SearchMovie({ addMovie, removeMovie, moviesId }) {
   const handleRadioChange = (e) => {
     setMovieSearch({ ...movieSearch, option: e.target.value });
   };
+
+  useEffect(() => {
+    if (isShow) {
+      const height = refSearchMovieSection.current.scrollHeight;
+      refSearchMovieSection.current.style.height = `${height}px`;
+    } else {
+      refSearchMovieSection.current.style.height = `0px`;
+    }
+  }, [resultSearch, isShow]);
 
   let displayResultMovies = null;
   if (resultSearch.resultMovie) {
@@ -91,7 +100,7 @@ function SearchMovie({ addMovie, removeMovie, moviesId }) {
   }
 
   let classNameIcon = "searchMovie_header_icon";
-  classNameIcon += !isShow ? " searchMovie_header_icon-close" : "";
+  classNameIcon += isShow ? " searchMovie_header_icon-close" : "";
 
   return (
     <div className="searchMovie_container">

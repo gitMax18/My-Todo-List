@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useHandleHeight } from "../personnalHooks";
 import Todo from "./Todo";
 import { IoClose } from "react-icons/io5";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 function Todos({ tabTodos, todosObject, deleteTodo, children }) {
   const refTodos = useRef();
@@ -20,12 +21,9 @@ function Todos({ tabTodos, todosObject, deleteTodo, children }) {
       return null;
     }
     return (
-      <Todo
-        dataTodo={todosObject[Object.keys(item)]}
-        key={Object.keys(item)}
-        id={Object.keys(item)}
-        deleteTodo={deleteTodo}
-      />
+      <CSSTransition key={Object.keys(item)} classNames="todoTransition" timeout={500} unmountOnExit>
+        <Todo dataTodo={todosObject[Object.keys(item)]} id={Object.keys(item)} deleteTodo={deleteTodo} />
+      </CSSTransition>
     );
   });
 
@@ -45,7 +43,7 @@ function Todos({ tabTodos, todosObject, deleteTodo, children }) {
         </div>
       </div>
       <div className="todos_todos" ref={refTodos}>
-        {showTodos}
+        <TransitionGroup component={null}>{showTodos}</TransitionGroup>
       </div>
     </div>
   );

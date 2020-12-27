@@ -48,7 +48,8 @@ var firebaseConfig = {
         firebase.auth().sendPasswordResetEmail(email)
         .then(function() {
           return resolve("Un email vous a été envoyé")
-        }).catch(function(error) {
+        })
+        .catch(function(error) {
           return reject(error)
         });
       })
@@ -78,7 +79,7 @@ var firebaseConfig = {
     }
 
     export const getDataTodos = (userId) => {
-      return new Promise((resolve, reject)=>{
+      return new Promise((resolve)=>{
         db.collection("users").doc(userId).collection("Todos").get()
         .then(function(querySnapshot) {
           let Todos = {}
@@ -87,7 +88,7 @@ var firebaseConfig = {
           })
          return resolve(Todos)
       })
-      .catch(()=> reject("Probleme rencontrer avec la récupération des données"))
+      .catch(()=> console.log("Probleme rencontrer avec la récupération des données"))
       })
     }
 
@@ -105,12 +106,12 @@ var firebaseConfig = {
     }
 
     export const getDataMovies = (userId) => {
-      return new Promise((resolve, reject)=>{
+      return new Promise((resolve)=>{
         db.collection("users").doc(userId).collection("Movies").doc("moviesId").get()
         .then(function(doc) {
           return resolve(doc.data().movies)
       })
-      .catch(()=> reject("Probleme rencontrer avec la récupération des données"))
+      .catch(()=> console.log("Probleme rencontrer avec la récupération des données"))
       })
     }
 

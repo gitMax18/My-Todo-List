@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import SearchMovie from "./SearchMovie";
 import FavoriteMovie from "./FavoriteMovie";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import ReactLoading from "react-loading";
 
 import { addDataMovies, getDataMovies } from "../firebase";
 
 function MoviesApp({ userId }) {
   const [moviesId, setMoviesId] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (moviesId.length > 0) {
@@ -14,9 +17,10 @@ function MoviesApp({ userId }) {
   }, [moviesId, userId]);
 
   useEffect(() => {
-    getDataMovies(userId)
-      .then((data) => setMoviesId(data))
-      .catch((err) => console.log(err));
+    getDataMovies(userId).then((data) => {
+      setMoviesId(data);
+      setIsLoading(false);
+    });
   }, [userId]);
 
   const addMovie = (movieId) => {
@@ -33,7 +37,9 @@ function MoviesApp({ userId }) {
   };
 
   const displayMovies = moviesId.map((movieId) => (
-    <FavoriteMovie movieId={movieId} key={movieId} removeMovie={removeMovie} />
+    <CSSTransition key={movieId} classNames="favoriteMovieTransition" timeout={500} unmountOnExit>
+      <FavoriteMovie movieId={movieId} removeMovie={removeMovie} />
+    </CSSTransition>
   ));
 
   return (
@@ -41,11 +47,20 @@ function MoviesApp({ userId }) {
       <div className="moviesApp_container">
         <SearchMovie addMovie={addMovie} removeMovie={removeMovie} moviesId={moviesId} />
         <h1 className="moviesApp_title">Mes Films</h1>
-
-        {displayMovies.length > 0 ? (
-          <div className="favoriteMovies_container">{displayMovies}</div>
+        {isLoading ? (
+          <div className="loader">
+            <ReactLoading width={"20rem"} height={"20rem"} type={"spinningBubbles"} color={"#1e3d59"} />
+          </div>
         ) : (
-          <p className="favoriteMovies_none">Vous n'avez actuellement aucun film ajouté</p>
+          <React.Fragment>
+            {displayMovies.length > 0 ? (
+              <div className="favoriteMovies_container">
+                <TransitionGroup component={null}>{displayMovies}</TransitionGroup>
+              </div>
+            ) : (
+              <p className="favoriteMovies_none">Vous n'avez actuellement aucun film ajouté</p>
+            )}
+          </React.Fragment>
         )}
       </div>
     </div>
